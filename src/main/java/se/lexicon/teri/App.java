@@ -1,13 +1,17 @@
 package se.lexicon.teri;
 
-/**
- * Hello world!
- *
- */
-public class App 
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import se.lexicon.teri.config.ComponentScanConfig;
+import se.lexicon.teri.data_access.StudentDao;
+
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(ComponentScanConfig.class);
+
+        StudentDao studentDao = context.getBean(StudentDao.class);
     }
 }
