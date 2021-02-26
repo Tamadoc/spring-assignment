@@ -1,27 +1,37 @@
 package se.lexicon.teri.data_access;
 
 import org.springframework.stereotype.Component;
-import se.lexicon.teri.models.Student;
 import se.lexicon.teri.data_access.sequencers.StudentSequencer;
+import se.lexicon.teri.models.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component("studentDao")
 public class StudentDaoListImpl implements StudentDao {
 
-    List<Student> students;
+    private final List<Student> students;
+
+    public StudentDaoListImpl() {
+        students = new ArrayList<>();
+    }
 
     @Override
     public Student save(Student student) {
+        Student savedStudent;
+
         if (student.getId() == 0) {
             student.setId(StudentSequencer.nextStudentId());
             students.add(student);
+            savedStudent = student;
         } else {
             Optional<Student> original = find(student.getId());
             original.ifPresent(name -> name.setName(student.getName()));
+            savedStudent = original.orElse(null);
         }
-        return student;
+
+        return savedStudent;
     }
 
     @Override

@@ -1,15 +1,17 @@
 package se.lexicon.teri.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
-@Component("userInput")
+@Component("inputService")
 public class ScannerInputService implements UserInputService {
 
-    @Autowired
-    private Scanner scanner;
+    private final Scanner scanner;
+
+    public ScannerInputService() {
+        this.scanner = new Scanner(System.in);
+    }
 
     @Override
     public String getString() {
@@ -18,6 +20,8 @@ public class ScannerInputService implements UserInputService {
 
     @Override
     public int getInt() {
-        return scanner.nextInt();
+        int i = scanner.nextInt();
+        scanner.nextLine();
+        return i;
     }
 }
