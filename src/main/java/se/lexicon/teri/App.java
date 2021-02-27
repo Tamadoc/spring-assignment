@@ -16,9 +16,12 @@ public class App {
         StudentManagement studentManagement = context.getBean(StudentManagement.class);
 
         // Call test methods on the bean
-        Student student = studentManagement.create();
-        System.out.println(student.toString());
-        studentManagement.save(student);
+        Student student = studentManagement.create();  // tests both create() and save()
+        System.out.println(studentManagement.find(1));
+        studentManagement.edit(student);
+        System.out.println(studentManagement.findAll());
+        System.out.println(studentManagement.remove(1));
+        System.out.println(studentManagement.find(1));
 
         // Close the context
         context.close();

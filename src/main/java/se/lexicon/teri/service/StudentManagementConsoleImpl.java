@@ -27,12 +27,14 @@ public class StudentManagementConsoleImpl implements StudentManagement {
         Student student = new Student(name);
 
         System.out.print("Save student Y/N: ");
-        String saveStudent = inputService.getString();
-        if (saveStudent.equalsIgnoreCase("y")) {
-            save(student);
+        String saveRequest = inputService.getString();
+
+        if (saveRequest.equalsIgnoreCase("y")) {
+            student = save(student);
         } else {
             student = null;
         }
+
         return student;
     }
 
@@ -43,22 +45,48 @@ public class StudentManagementConsoleImpl implements StudentManagement {
 
     @Override
     public Student find(int id) {
-        return null;
+        Student student = studentDao.find(id);
+
+        if (student == null) {
+            System.out.println("Student with id " + id + " not found");
+        }
+
+        return student;
     }
 
     @Override
     public Student remove(int id) {
-        return null;
+        Student student = find(id);
+
+        if (student != null) {
+            studentDao.delete(id);
+        }
+
+        return student;
     }
 
     @Override
     public List<Student> findAll() {
-        // Use StudentDao to find all students. Make use of dependency in app
-        return null;
+        return studentDao.findAll();
     }
 
     @Override
     public Student edit(Student student) {
-        return null;
+        Student foundStudent = null;
+        if (student != null) {
+            foundStudent = studentDao.find(student.getId());
+        } else {
+            System.out.println("Student cannot be null");
+        }
+
+        if (foundStudent != null) {
+            System.out.print("Edit student - enter new name: ");
+            String name = inputService.getString();
+
+            System.out.println("Editing Student...");
+            foundStudent.setName(name);
+        }
+
+        return foundStudent;
     }
 }

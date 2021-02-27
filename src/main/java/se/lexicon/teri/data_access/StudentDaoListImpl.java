@@ -26,19 +26,23 @@ public class StudentDaoListImpl implements StudentDao {
             students.add(student);
             savedStudent = student;
         } else {
-            Optional<Student> original = find(student.getId());
-            original.ifPresent(name -> name.setName(student.getName()));
-            savedStudent = original.orElse(null);
+            Student original = find(student.getId());
+            if (original != null) {
+                original.setName(student.getName());
+            }
+            savedStudent = original;
         }
 
         return savedStudent;
     }
 
     @Override
-    public Optional<Student> find(int id) {
+    public Student find(int id) {
         if (id == 0) throw new IllegalArgumentException("Id should not be null");
 
-        return students.stream().filter(student -> student.getId() == id).findFirst();
+        Optional<Student> foundStudent = students.stream().filter(student -> student.getId() == id).findFirst();
+
+        return foundStudent.orElse(null);
     }
 
     @Override
